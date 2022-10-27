@@ -5,13 +5,16 @@ if [ ${CAN_I_SUDO} -gt 0 ]
 then
 	echo "Checking apt repos for updates..."
 	sudo apt update >> stuff.txt &&
-	sudo apt upgrade -y >> update.txt;flatpak update -y
+	sudo apt upgrade -y >> update.txt
+	echo "Checking for any flatpak updates..."
+	flatpak update -y >> flatpak.txt
 else
 	read -p "Please enter your password: " PASSWD
 	echo "Checking apt repos for updates..."
 	echo "$PASSWD" | sudo -S apt update >> stuff.txt && echo "Applying any updates we found" 
 	sudo apt upgrade -y >> update.txt
-	flatpak update -y
+	echo "Checking for any flatpak updates..."
+	flatpak update -y >> flatpak.txt
 	rm stuff.txt
 fi
 
