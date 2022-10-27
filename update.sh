@@ -7,8 +7,9 @@ then
 	sudo apt update >> stuff.txt &&
 	sudo apt upgrade -y >> update.txt;flatpak update -y
 else
+	read -p "Please enter your password: " PASSWD
 	echo "Checking apt repos for updates..."
-	echo "TIMESsquare23!" | sudo -S apt update >> stuff.txt && echo "Applying any updates we found" 
+	echo "$PASSWD" | sudo -S apt update >> stuff.txt && echo "Applying any updates we found" 
 	sudo apt upgrade -y >> update.txt
 	flatpak update -y
 	rm stuff.txt
