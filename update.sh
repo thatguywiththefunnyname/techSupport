@@ -13,6 +13,8 @@ else
 	echo "Checking apt repos for updates..."
 	echo "$PASSWD" | sudo -S apt update >> stuff.txt && echo "Applying any updates we found" 
 	sudo apt upgrade -y >> update.txt
+	echo "Checking for any erros while update"
+	python3 checkErrors.py
 	echo "Checking for any flatpak updates..."
 	flatpak update -y >> flatpak.txt
 	rm stuff.txt
