@@ -1,0 +1,43 @@
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://linux.teamviewer.com/deb stable InRelease
+Hit:3 http://packages.microsoft.com/repos/code stable InRelease
+Hit:4 http://deb.volian.org/volian scar InRelease
+Hit:5 http://apt.pop-os.org/proprietary jammy InRelease
+Hit:6 http://ubuntu.ucr.ac.cr/ubuntu jammy InRelease
+Hit:7 http://apt.pop-os.org/release jammy InRelease
+Hit:8 http://apt.pop-os.org/ubuntu jammy InRelease
+Hit:9 http://apt.pop-os.org/ubuntu jammy-security InRelease
+Hit:10 http://apt.pop-os.org/ubuntu jammy-updates InRelease
+Hit:11 http://apt.pop-os.org/ubuntu jammy-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://linux.teamviewer.com/deb stable InRelease
+Hit:3 http://packages.microsoft.com/repos/code stable InRelease
+Hit:4 http://apt.pop-os.org/proprietary jammy InRelease
+Hit:5 http://deb.volian.org/volian scar InRelease
+Hit:6 http://apt.pop-os.org/release jammy InRelease
+Hit:7 http://ubuntu.ucr.ac.cr/ubuntu jammy InRelease
+Hit:8 http://apt.pop-os.org/ubuntu jammy InRelease
+Hit:9 http://apt.pop-os.org/ubuntu jammy-security InRelease
+Hit:10 http://apt.pop-os.org/ubuntu jammy-updates InRelease
+Hit:11 http://apt.pop-os.org/ubuntu jammy-backports InRelease
+Reading package lists...
+Building dependency tree...
+Reading state information...
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+Hit:1 https://download.docker.com/linux/ubuntu jammy InRelease
+Hit:2 https://linux.teamviewer.com/deb stable InRelease
+Hit:3 http://apt.pop-os.org/proprietary jammy InRelease
+Hit:4 http://packages.microsoft.com/repos/code stable InRelease
+Hit:5 http://deb.volian.org/volian scar InRelease
+Hit:6 http://apt.pop-os.org/release jammy InRelease
+Hit:7 http://apt.pop-os.org/ubuntu jammy InRelease
+Hit:8 http://ubuntu.ucr.ac.cr/ubuntu jammy InRelease
+Get:9 http://apt.pop-os.org/ubuntu jammy-security InRelease [110 kB]
+Get:10 http://apt.pop-os.org/ubuntu jammy-updates InRelease [114 kB]
+Get:11 http://apt.pop-os.org/ubuntu jammy-backports InRelease [99.8 kB]
+Fetched 324 kB in 5s (66.7 kB/s)
+Reading package lists...
