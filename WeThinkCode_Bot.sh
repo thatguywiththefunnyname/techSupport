@@ -61,7 +61,7 @@ update_lms(){
 	if [ ${CAN_I_SUDO} -gt 0 ]
 	then
 		echo "Please ensure that lms is in the Downloads folder"
-		echo "Please also make sure theres only one version in the folder"
+		echo "Please also make sure theres only one version in the folder titled 'wtc-lms'"
 		chmod +x ~/Downloads/wtc-lms
 		echo "Placing the LMS in the /usr/local/bin"
 		sudo mv ~/Downloads/wtc-lms /usr/local/bin
@@ -75,15 +75,17 @@ update_lms(){
 		wtc-lms -V
 	fi
 }
-# check_errors()
-# {
-# 	HELD_BACK=$(grep "The following packages have been held back")
-# 	if [ ${HELD_BACK}='']
-# 	then
-# 	else
+check_errors()
+{
+	HELD_BACK=$(grep "The following packages have been held back update.txt")
+	if [ ${HELD_BACK}='']
+	then
+		continue
+	# else
 		
-# 	fi
-# }
+		
+	fi
+}
 
 autoremove()
 {
