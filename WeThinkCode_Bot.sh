@@ -87,7 +87,10 @@ check_errors()
 	if [ ${HELD_BACK}='']
 	then
 		continue
-	# else
+	else
+		grep -A 1 "The following packages have been held back" update.txt >> held_back.txt
+		sed '2p;d' | held_back.txt >> packagesToReinstall.txt
+		sudo apt install --reinstall packagedToReinstall.txt #need to read from text file, its only one line, or use variable
 		
 		
 	fi
