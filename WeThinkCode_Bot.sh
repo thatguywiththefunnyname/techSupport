@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+declare -g PASSWD=""
+
 echo "Welcome to the WeThinkCode_ bot"
 
 run_script()
@@ -39,32 +41,39 @@ help_command()
 	done		-	CLose the WeThinkCode_ bot"
 
 }
+
+check_if_can_sudo(){
+	declare -g PASSWD
+	CAN_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
+	if [ ${CAN_SUDO} -gt 0 ]
+	then
+		return 0
+	else
+		read -sp '[sudo] please enter password for sudo access: ' passwd
+		PASSWD=$passwd
+		return 0
+	fi
+}
 update_software()
 {
-	CAN_I_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
-	if [ ${CAN_I_SUDO} -gt 0 ]
+	declare -g PASSWD
+	check_if_can_sudo
+	if [ $? -eq 0 ]
 	then
-		echo "Checking apt repos for updates..."
-		sudo apt-get update >> stuff.txt &&
-		sudo apt-get upgrade -y >> update.txt
-		echo "Checking for any flatpak updates..."
-		flatpak update -y >> flatpak.txt
-		autoremove
-	else
-		read -p "Please enter your password: " PASSWD
 		echo "Checking apt repos for updates..."
 		echo "$PASSWD" | sudo -S apt-get update >> stuff.txt && echo "Applying any updates we found" 
 		sudo apt-get upgrade -y >> update.txt
-		# echo "Checking for any erros while update"
+		echo "Checking for any erros while update"
+		check_errors
 		echo "Checking for any flatpak updates..."
 		flatpak update -y >> flatpak.txt
 		autoremove
 		rm stuff.txt
-	fi
+
 }
 update_lms(){
-	CAN_I_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
-	if [ ${CAN_I_SUDO} -gt 0 ]
+	check_if_can_sudo
+	if [ $? -eq 0 ]
 	then
 		echo "Please ensure that lms is in the Downloads folder"
 		echo "Please also make sure theres only one version in the folder titled 'wtc-lms'"
@@ -73,11 +82,6 @@ update_lms(){
 		sudo mv ~/Downloads/wtc-lms /usr/local/bin
 		echo "removing lms from /usr/.local/bin"
 		sudo rm /usr/.local/bin/wtc-lms
-		wtc-lms -V
-	else
-		read -p "Please enter your password: " PASSWD
-		chmod +x wtc-lms
-		echo "$PASSWD" | sudo -S mv ~/Downloads/wtc-lms 
 		wtc-lms -V
 	fi
 }
@@ -88,9 +92,11 @@ check_errors()
 	then
 		continue
 	else
-		grep -A 1 "The following packages have been held back" update.txt >> held_back.txt
-		sed '2p;d' | held_back.txt >> packagesToReinstall.txt
-		sudo apt install --reinstall packagedToReinstall.txt #need to read from text file, its only one line, or use variable
+		echo "I've found packages that need reinstalling, reinstalling them..." 
+		temporay_variable_for_line=$(grep -A 1 "The following packages have been held back" update.txt)
+		temporary_sed_var=$(sed '2p;d' $temporary_variable_for_line) 
+		sudo apt install --reinstall $temporary_sed_var 
+		 #need to read from text file, its only one line, or use variable
 		
 		
 	fi
@@ -113,3 +119,15 @@ autoremove()
 	fi
 }
 run_script
+	# CAN_I_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
+	# if [ ${CAN_I_SUDO} -gt 0 ]
+	# then
+	# 	echo "Checking apt repos for updates..."
+	# 	sudo apt-get update >> stuff.txt &&
+	# 	sudo apt-get upgrade -y >> update.txt
+	# 	echo "Checking for any flatpak updates..."
+	# 	flatpak update -y >> flatpak.txt
+	# 	autoremove
+	# else
+	# 	read -p "Please enter your password: " PASSWD
+	# 		fi
