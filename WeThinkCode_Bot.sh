@@ -10,6 +10,10 @@ run_script()
 		if [[ $COMMAND == 'done' ]]
 		then	
 			break
+		elif [[ $COMMAND == 'autofix']]
+		then
+			update_lms
+			update_software
 		elif [[ $COMMAND == 'help' ]]
 		then
 			help_command
@@ -29,9 +33,11 @@ help_command()
 {
 	echo "These are some of the commands I can do
 	help		-	Show a list a commands
+	autofix		-	Autofind problems and autofix them
 	update		-	Update the computer software, apt apps and flatpak apps
 	lms update	-	Update the lms to the newest version
 	done		-	CLose the WeThinkCode_ bot"
+
 }
 update_software()
 {
