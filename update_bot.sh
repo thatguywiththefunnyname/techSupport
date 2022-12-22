@@ -12,7 +12,7 @@ run_script()
 		if [[ $COMMAND == 'done' ]]
 		then	
 			break
-		elif [[ $COMMAND == 'autofix']]
+		elif [[ $COMMAND == 'autofix' ]]
 		then
 			update_lms
 			update_software
@@ -45,12 +45,21 @@ help_command()
 check_if_can_sudo(){
 	declare -g PASSWD
 	CAN_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
-	if [ ${CAN_SUDO} -gt 0 ]
+	# sudo -v
+	if [ $? -ne 0 ]
 	then
-		return 0
+		while true;do
+			read -sp '[sudo] please enter password for sudo access: ' passwd
+			PASSWD=$passwd
+			sudo -S -v <<< $PASSWD
+			if [ $? -ne 0 ]
+			then
+				echo "Incorrect password! Please try again."
+			else
+				return 0
+			fi
+		done
 	else
-		read -sp '[sudo] please enter password for sudo access: ' passwd
-		PASSWD=$passwd
 		return 0
 	fi
 }
@@ -64,13 +73,14 @@ update_software()
 		echo "$PASSWD" | sudo -S apt-get update >> stuff.txt && echo "Applying any updates we found" 
 		sudo apt-get upgrade -y >> update.txt
 		echo "Checking for any erros while update"
-		check_errors
+		check_errors_held_back
 		echo "Checking for any flatpak updates..."
 		flatpak update -y >> flatpak.txt
 		autoremove
 		rm stuff.txt
-
+	fi
 }
+
 update_lms(){
 	check_if_can_sudo
 	if [ $? -eq 0 ]
@@ -85,7 +95,7 @@ update_lms(){
 		wtc-lms -V
 	fi
 }
-check_errors()
+check_errors_held_back()
 {
 	HELD_BACK=$(grep "The following packages have been held back update.txt")
 	if [ ${HELD_BACK}='']
@@ -118,7 +128,8 @@ autoremove()
 		echo "All done now! Have a productive day :D"
 	fi
 }
-run_script
+# run_script
+check_if_can_sudo
 	# CAN_I_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
 	# if [ ${CAN_I_SUDO} -gt 0 ]
 	# then
