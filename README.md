@@ -1,4 +1,4 @@
-Auto Fix Script for Debian/Ubuntu
+**Auto Fix Script for Debian/Ubuntu**
 
 This repository contains a script that can be used to automatically fix common issues on Debian/Ubuntu based systems.
 Requirements
