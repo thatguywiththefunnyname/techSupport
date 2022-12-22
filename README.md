@@ -2,15 +2,27 @@ Auto Fix Script for Debian/Ubuntu
 
 This repository contains a script that can be used to automatically fix common issues on Debian/Ubuntu based systems.
 Requirements
+```    
+    ## Requirements
+
+    To run this script, you will need the following:
+
+    - Git: The script uses the `git` command to clone the repository. 
+    Please ensure that git is installed on your system. 
+    You can check if git is installed by running `git --version` in a terminal.
+    - Permissions: The script requires password-based sudo privileges to move the main auto fix script to the `bin`     directory. 
+    Please ensure that you have the necessary permissions to run the script.
+
 
     A Debian/Ubuntu based system
     bash shell (should be installed by default on most systems)
-
+    
+```
 Installation
 
 To install the script, clone this repository to your local machine using the following command:
 
-git clone https://github.com/thatguywiththefunnyname/techSupport.git
+```git clone https://github.com/thatguywiththefunnyname/techSupport.git```
 
 
 This will create a new directory called your-repo on your local machine, and will download all of the files in the repository to that directory.
