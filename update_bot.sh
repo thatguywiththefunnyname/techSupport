@@ -22,9 +22,6 @@ run_script()
 		elif [[ $COMMAND == 'update' ]] 
 		then
 			update_software
-		elif [[ $COMMAND == 'lms update' ]]
-		then
-			update_lms
 		else
 			echo "Sorry, I do not understand that command $COMMAND"
 			echo "You can type 'help' to get the list of commands available"
@@ -81,20 +78,7 @@ update_software()
 	fi
 }
 
-update_lms(){
-	check_if_can_sudo
-	if [ $? -eq 0 ]
-	then
-		echo "Please ensure that lms is in the Downloads folder"
-		echo "Please also make sure theres only one version in the folder titled 'wtc-lms'"
-		chmod +x ~/Downloads/wtc-lms
-		echo "Placing the LMS in the /usr/local/bin"
-		sudo mv ~/Downloads/wtc-lms /usr/local/bin
-		echo "removing lms from /usr/.local/bin"
-		sudo rm /usr/.local/bin/wtc-lms
-		wtc-lms -V
-	fi
-}
+
 check_errors_held_back()
 {
 	HELD_BACK=$(grep "The following packages have been held back update.txt")
@@ -128,17 +112,4 @@ autoremove()
 		echo "All done now! Have a productive day :D"
 	fi
 }
-# run_script
-check_if_can_sudo
-	# CAN_I_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
-	# if [ ${CAN_I_SUDO} -gt 0 ]
-	# then
-	# 	echo "Checking apt repos for updates..."
-	# 	sudo apt-get update >> stuff.txt &&
-	# 	sudo apt-get upgrade -y >> update.txt
-	# 	echo "Checking for any flatpak updates..."
-	# 	flatpak update -y >> flatpak.txt
-	# 	autoremove
-	# else
-	# 	read -p "Please enter your password: " PASSWD
-	# 		fi
+run_script
