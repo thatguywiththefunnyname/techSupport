@@ -10,7 +10,8 @@ Installation
 
 To install the script, clone this repository to your local machine using the following command:
 
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/thatguywiththefunnyname/techSupport.git
+
 
 This will create a new directory called your-repo on your local machine, and will download all of the files in the repository to that directory.
 
