@@ -2,7 +2,7 @@
 
 declare -g PASSWD=""
 
-echo "Welcome to the WeThinkCode_ bot"
+echo "Welcome to the Update bot"
 
 run_script()
 {
@@ -14,7 +14,6 @@ run_script()
 			break
 		elif [[ $COMMAND == 'autofix' ]]
 		then
-			update_lms
 			update_software
 		elif [[ $COMMAND == 'help' ]]
 		then
