@@ -8,33 +8,44 @@ run_script()
 {
 	while true
 	do
+		help_command
 		read -p "What would you like to do? " COMMAND
 		if [[ $COMMAND == 'done' ]]
 		then	
 			break
 		elif [[ $COMMAND == 'autofix' ]]
 		then
-			update_software
+			update_apt
 		elif [[ $COMMAND == 'help' ]]
 		then
 			help_command
-		elif [[ $COMMAND == 'update' ]] 
+		elif [[ $COMMAND == 'update_apt' ]] 
 		then
 			update_software
+		elif [[ $COMMAND == 'update_fltpk' ]] 
+		then
+			update_flatpak
 		else
 			echo "Sorry, I do not understand that command $COMMAND"
 			echo "You can type 'help' to get the list of commands available"
 		fi
 	done
 }
+
+update_flatpak()
+{
+	flatpak update -y
+	
+}
+
 help_command()
 {
 	echo "These are some of the commands I can do
-	help		-	Show a list a commands
-	autofix		-	Autofind problems and autofix them
-	update		-	Update the computer software, apt apps and flatpak apps
-	lms update	-	Update the lms to the newest version
-	done		-	CLose the WeThinkCode_ bot"
+	help			-	Show a list a commands
+	autofix			-	Autofind problems and autofix them
+	update_apt		-	Update the apt packages found
+	update_fltpk	-	Update the flatpak packages found
+	done			-	Close the Update bot"
 
 }
 
@@ -59,7 +70,7 @@ check_if_can_sudo(){
 		return 0
 	fi
 }
-update_software()
+update_apt()
 {
 	declare -g PASSWD
 	check_if_can_sudo
@@ -68,20 +79,54 @@ update_software()
 		echo "Checking apt repos for updates..."
 		echo "$PASSWD" | sudo -S apt-get update >> stuff.txt && echo "Applying any updates we found" 
 		sudo apt-get upgrade -y >> update.txt
-		echo "Checking for any erros while update"
+		result=check_errors_request
+		if [ $result -ne 0 ]
+		then
+			rm stuff.txt
+			rm update.txt
+		fi
+	fi
+}
+check_errors_request(){
+	read -p "Would you like to check for any errors? (y/N)" REQUEST
+	if [ "$REQUEST" = "y" ]
+	then
 		check_errors_held_back
-		echo "Checking for any flatpak updates..."
-		flatpak update -y >> flatpak.txt
-		autoremove
-		rm stuff.txt
+		return 0
+	else
+		return 1
+}
+
+fix_config_error_dpkg()
+{
+	check_if_can_sudo
+	if [ $? -eq 0 ]
+	then
+		echo "Checking for dpkg errors..."
+		sudo apt update && sudo apt upgrade >> dpkg.txt
+		DPKG_TMP_VAR=$(grep "E: dpkg" dpkg.txt)
+		REMOVE_PACKAGE=$(grep "--remove")
+		PACKAGE_NAME=$(grep sed 's/package \(.*\) (--configure).*/\1/')
+		if [ -n "$DPKG_TMP_VAR" ]
+		then
+			if [ -n "$REMOVE_PACKAGE" ]
+			echo "dpkg error found:\n$REMOVE_PACKAGE"
+			printf "Attempting to fix dpkg error..."
+			
+		fi
 	fi
 }
 
+dpkg_errors()
+{
+	read -p "Which dpkg error would you like to fix?\n1:dpkg config error
+	\n2:dpkg can't locate package"
+}
 
 check_errors_held_back()
 {
-	HELD_BACK=$(grep "The following packages have been held back update.txt")
-	if [ ${HELD_BACK}='']
+	HELD_BACK=$(grep "The following packages have been held back" update.txt)
+	if [ ${HELD_BACK}='' ]
 	then
 		continue
 	else
@@ -89,7 +134,7 @@ check_errors_held_back()
 		temporay_variable_for_line=$(grep -A 1 "The following packages have been held back" update.txt)
 		temporary_sed_var=$(sed '2p;d' $temporary_variable_for_line) 
 		sudo apt install --reinstall $temporary_sed_var 
-		 #need to read from text file, its only one line, or use variable
+		 
 		
 		
 	fi
