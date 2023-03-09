@@ -106,12 +106,15 @@ fix_config_error_dpkg()
 		sudo apt update && sudo apt upgrade >> dpkg.txt
 		DPKG_TMP_VAR=$(grep "E: dpkg" dpkg.txt)
 		REMOVE_PACKAGE=$(grep "--remove")
-		PACKAGE_NAME=$(grep sed 's/package \(.*\) (--configure).*/\1/')
+		PACKAGE_NAME_AT_FRONT=$(grep -o 'package.*')
+		PACKAGE_NAME=$(grep -o '^\S*')
 		if [ -n "$DPKG_TMP_VAR" ]
 		then
 			if [ -n "$REMOVE_PACKAGE" ]
 			echo "dpkg error found:\n$REMOVE_PACKAGE"
 			printf "Attempting to fix dpkg error..."
+			sudo apt-get remove $PACKAGE_NAME
+			sudo apt-get install $PACKAGE_NAME
 			
 		fi
 	fi
