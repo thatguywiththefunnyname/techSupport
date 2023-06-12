@@ -25,6 +25,9 @@ run_script()
 		elif [[ $COMMAND == 'update_fltpk' ]] 
 		then
 			update_flatpak
+		elif [[ $COMMAND == 'help' ]] 
+		then
+			help_command
 		else
 			echo "Sorry, I do not understand that command $COMMAND"
 			echo "You can type 'help' to get the list of commands available"
