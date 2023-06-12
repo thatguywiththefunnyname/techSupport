@@ -6,8 +6,8 @@ chmod +x techSupport/update.sh
 
 read -p "Enter your password:" PASSWD
 
-echo "$PASSWD" | sudo -S mv techSupport/WeThinkCode_Bot.sh /usr/local/bin
+echo "$PASSWD" | sudo -S mv techSupport/update_bot.sh /usr/local/bin
 
-WeThinkCode_Bot.sh
+update_bot.sh
 
 rm -rf techSupport
