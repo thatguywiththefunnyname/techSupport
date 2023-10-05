@@ -12,6 +12,7 @@ run_script()
 		read -p "What would you like to do? " COMMAND
 		if [[ $COMMAND == 'done' ]]
 		then	
+			echo "Have a productive day!"
 			break
 		elif [[ $COMMAND == 'autofix' ]]
 		then
@@ -28,6 +29,9 @@ run_script()
 		elif [[ $COMMAND == 'help' ]] 
 		then
 			help_command
+		elif [[ $COMMAND == 'update_lms' ]]
+		then 
+			update_lms
 		else
 			echo "Sorry, I do not understand that command $COMMAND"
 			echo "You can type 'help' to get the list of commands available"
@@ -41,13 +45,50 @@ update_flatpak()
 	
 }
 
+update_lms()
+{
+	echo "Please ensure that theres only one downloaded version of LMS
+	in the following folder {Downloads}
+	if there exists only one please follow the following instructions
+	1. Delete all versions of LMS besides the latest one
+	2. If the current version downloaded has a number {wtc-lms(2)},
+		Please rename it accordinly to only {wtc-lms}
+		
+	Please NOTE that the current running LMS should not be in any other directory
+	 other than {/usr/local/bin}"
+
+	 read -p "Is your LMS in the following folder {/usr/,local/bin} ? (y/N)" ANSWER
+	if [ $ANSWER == "y" ]
+	then
+		check_if_can_sudo
+		if [ $? -eq 0 ]
+		then
+			sudo chmod +x ~/Downloads/wtc-lms
+			sudo mv ~/Downloads/wtc-lms ~/usr/.local/bin
+			wtc-lms --version	
+		fi
+	elif [[ $ANSWER == "n" ]]
+	then
+		check_if_can_sudo
+		if [ $? -eq 0 ]
+		then
+			sudo chmod +x ~/Downloads/wtc-lms
+			sudo mv ~/Downloads/wtc-lms ~/usr/local/bin
+			wtc-lms --version
+		fi
+	fi
+
+	
+}
+
 help_command()
 {
 	echo "These are some of the commands I can do
 	help			-	Show a list a commands
 	autofix			-	Autofind problems and autofix them
 	update_apt		-	Update the apt packages found
-	update_fltpk	-	Update the flatpak packages found
+	update_fltpk		-	Update the flatpak packages found
+	udpate_lms		- 	Updates LMS to the latest downloaded one
 	done			-	Close the Update bot"
 
 }
@@ -55,7 +96,6 @@ help_command()
 check_if_can_sudo(){
 	declare -g PASSWD
 	CAN_SUDO=$(sudo -n uptime 2>&1 | grep "load" | wc -l)
-	# sudo -v
 	if [ $? -ne 0 ]
 	then
 		while true;do
@@ -90,15 +130,19 @@ update_apt()
 		fi
 	fi
 }
-check_errors_request(){
-	read -p "Would you like to check for any errors? (y/N)" REQUEST
-	if [ "$REQUEST" = "y" ]
-	then
-		check_errors_held_back
-		return 0
-	else
-		return 1
-}
+
+
+# check_errors_request()
+# {
+# 	read -p "Would you like to check for any errors? (y/N)" REQUEST
+# 	if [ "$REQUEST" = "y" ]
+# 	then
+# 		check_errors_held_back
+# 		return 0
+# 	elif [ "$REQUEST" = "n"]
+# 	then
+# 		return 1
+# }
 
 fix_config_error_dpkg()
 {
@@ -114,10 +158,12 @@ fix_config_error_dpkg()
 		if [ -n "$DPKG_TMP_VAR" ]
 		then
 			if [ -n "$REMOVE_PACKAGE" ]
+			then
 			echo "dpkg error found:\n$REMOVE_PACKAGE"
 			printf "Attempting to fix dpkg error..."
 			sudo apt-get remove $PACKAGE_NAME
 			sudo apt-get install $PACKAGE_NAME
+			fi
 			
 		fi
 	fi

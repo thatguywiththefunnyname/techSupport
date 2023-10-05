@@ -44,7 +44,9 @@ The script will automatically fix any held back packages on the system.
 **Limitations**
 
 The script is currently only able to fix held back packages on a system. It may not be able to fix all issues on your system. Use the script at your own risk, and make sure to create backups of important data before running the script.
-Contributions
+
+
+**Contributions**
 
 If you have any suggestions for improvements to the script, or if you have found any bugs, please open an issue or a pull request. We welcome all contributions to make the script better.
 
